@@ -1,8 +1,8 @@
+/* tslint:disable:no-string-literal */
 import {Component, OnInit} from '@angular/core';
 import {SpainDataService} from '../services/spain-data.service';
 import {Label, MultiDataSet} from 'ng2-charts/lib/base-chart.directive';
 import {Color} from 'ng2-charts/lib/color';
-import {NovelCovid} from 'novelcovid';
 import {TransformDataService} from '../services/transform-data.service';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 
@@ -13,7 +13,6 @@ import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
     styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-    public spainInfo;
     public communities;
     public lineChartData: any[];
     public lineChartLabels: Label[];
@@ -53,40 +52,50 @@ export class HomePage implements OnInit {
         ];
 
 
+
+    single: any[] = [
+        {
+            "name": "Germany",
+            "value": 8940000
+        },
+        {
+            "name": "USA",
+            "value": 5000000
+        },
+        {
+            "name": "France",
+            "value": 7200000
+        }
+    ];
+    multi: any[];
+    result: any[];
+
+    // options
+    showXAxis = true;
+    showYAxis = true;
+    showLegend = false;
+    xAxisLabel = 'Fecha';
+
+    colorScheme = {
+        domain: ['#A10A28']
+    };
+
+    chartSelected = 'all';
+    schemeType: string = 'ordinal';
     constructor(private spainDataService: SpainDataService,
                 private transformDataService: TransformDataService) {
+
     }
 
     ngOnInit(): void {
-
-        this.spainDataService.getCsvData$('AGE').subscribe(res => {
-            this.transformDataService.transformDataByAge(res).then(
+        this.spainDataService.getCsvData$('CASES').subscribe(res => {
+            this.transformDataService.transformDataByCases(res).then(
                 (collection) => {
-                    this.chartReady = true;
-                    this.doughnutChartLabels = ['Fallecidos', 'Uci', 'Hospitalizados', 'Seguimiento remoto'];
-                    this.doughnutChartData = [
-                        collection['range0'].deaths,
-                        collection['range0'].uci,
-                        collection['range0'].hospitalized,
-                        collection['range0'].others,
-                    ];
-                    this.barChartLabels = ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69'];
-                    this.barChartData = [
-                        {
-                            data: [
-                                collection['range0'].deaths,
-                                collection['range1'].deaths,
-                                collection['range2'].deaths,
-                                collection['range3'].deaths,
-                                collection['range4'].deaths,
-                                collection['range5'].deaths,
-                                collection['range6'].deaths
-                            ], label: 'Fallecidos'
-                        }
-                    ];
+                    this.single = collection as [];
                 }
             );
         });
+
         this.spainDataService.getAll$().subscribe(res => {
             this.loadingIndicator = false;
             this.communities = res;
@@ -101,33 +110,9 @@ export class HomePage implements OnInit {
                 backgroundColor: 'rgba(255,255,0,0.28)',
             },
         ];
-
-        const track = new NovelCovid();
-        track.countries('ESP').then(res => {
-            this.spainInfo = res;
-        })
-        track.historical(null, 'Spain').then(res => {
-            this.data = true;
-            console.log();
-            this.lineChartLabels = Object.keys((res as { timeline }).timeline.cases);
-            this.lineChartData = [
-                {
-                    data: Object.values((res as { timeline }).timeline.cases),
-                    label: 'Casos'
-                },
-                {
-                    data: Object.values((res as { timeline }).timeline.deaths),
-                    label: 'Fallecidos'
-                },
-                {
-                    data: Object.values((res as { timeline }).timeline.recovered),
-                    label: 'Recuperados'
-                },
-            ];
-        });
     }
 
-    fun() {
-        console.log('kkk');
+    onSelectorClicked(event) {
+        this.chartSelected = event.target.value;
     }
 }

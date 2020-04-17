@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Papa} from 'ngx-papaparse';
 
 @Injectable({
@@ -6,71 +6,63 @@ import {Papa} from 'ngx-papaparse';
 })
 export class TransformDataService {
 
-  constructor(private csvParser: Papa) { }
+  constructor(private csvParser: Papa) {
+  }
 
-  transformDataByAge = (data) => {
-    const dataByAge: {
-      [key: string]: { confirmedCases: number, deaths: number, hospitalized: number, uci: number, others: number } } = {
-      range0: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range1: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range2: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range3: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range4: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range5: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range6: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range7: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-      range8: {confirmedCases: 0, deaths: 0, hospitalized: 0, uci: 0, others: 0},
-    };
+  transformDataByCases = (data) => {
     return new Promise(resolve => {
       this.csvParser.parse(data, {
         header: true,
         complete: results => {
-          results.data.forEach(row => {
-            if (row.sexo === 'ambos') {
-              let rangeGroup = null;
-              switch (row.rango_edad) {
-                case '0-9':
-                  rangeGroup = 'range0';
-                  break;
-                case '10-19':
-                  rangeGroup = 'range1';
-                  break;
-                case '20-29':
-                  rangeGroup = 'range2';
-                  break;
-                case '30-39':
-                  rangeGroup = 'range3';
-                  break;
-                case '40-49':
-                  rangeGroup = 'range4';
-                  break;
-                case '50-59':
-                  rangeGroup = 'range5';
-                  break;
-                case '60-69':
-                  rangeGroup = 'range6';
-                  break;
-                case '70-79':
-                  rangeGroup = 'range7';
-                  break;
-                case '80 y +':
-                case '80-89':
-                case '90 y +':
-                  rangeGroup = 'range8';
-                  break;
-              }
-
-              const group = {...dataByAge[rangeGroup]};
-              group.confirmedCases += +row.casos_confirmados;
-              group.deaths += +row.fallecidos;
-              group.hospitalized += +row.hospitalizados;
-              group.uci += +row.ingresos_uci;
-              dataByAge[rangeGroup] = group;
-            }
-          });
-          resolve(dataByAge);
+          let row = results.data.filter((res) => res.cod_ine == '00')[0];
+          const dates = Object.keys(row);
+          const cases = Object.values(row);
+          dates.splice(0, 2);
+          cases.splice(0, 2);
+          const increment = [];
+          cases.forEach((value, index) => {
+            let val = +value - (+cases[index-1]);
+            increment.push(isNaN(val) ? 0 : val );
+          })
+          let kk = [];
+          dates.forEach((value, index) => {
+            kk.push({name: value, value: increment[index]})
+          })
+          resolve(kk);
         }
       });
     });
-  }
+  };
+
+  transformDataByAge = (data) => {
+    const ranges = ["90 y +", "80-89", "70-79", "60-69", "50-59", "40-49", "30-39", "20-29", "10-19", "0-9"];
+    return new Promise(resolve => {
+      this.csvParser.parse(data, {
+        header: true,
+        complete: results => {
+          let date = new Date();
+          let femaleDataPoints = [];
+          ranges.forEach( range => {
+            let deaths = results.data.filter(res => {
+              return res.sexo === 'mujeres'
+                && res.rango_edad === range
+                && res.fecha.split("-")[2] == date.getDate() - 1
+            })[0].fallecidos
+            femaleDataPoints.push({y: +deaths, label: range})
+          });
+
+          let maleDataPoints = [];
+          ranges.forEach( range => {
+            let deaths = results.data.filter(res => {
+              return res.sexo === 'hombres'
+                && res.rango_edad === range
+                && res.fecha.split("-")[2] == date.getDate() - 1
+            })[0].fallecidos
+            maleDataPoints.push({y: +deaths, label: range})
+          });
+          resolve({female: femaleDataPoints, male: maleDataPoints});
+        }
+      });
+    });
+  };
 }

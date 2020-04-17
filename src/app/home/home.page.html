@@ -4,68 +4,17 @@
             <ion-buttons slot="start">
                 <ion-back-button></ion-back-button>
             </ion-buttons>
-            <ion-title>Estadísticas</ion-title>
+            <ion-title>Estadísticas COVID19</ion-title>
         </ion-toolbar>
-
     </ion-header>
-
-    <ion-card>
-        <ion-item>
-            <ion-icon name="stats-chart-outline"></ion-icon>
-            <ion-toolbar>
-                <ion-label>Información general</ion-label>
-            </ion-toolbar>
-            <ion-button fill="outline" slot="end" (click)="fun()">Detalle</ion-button>
-        </ion-item>
-
-        <ion-card-content>
-            <!-- Notes in a List -->
-            <ion-list>
-                <ion-item>
-                    <ion-label style="font-size: small">Confirmados:</ion-label>
-                    <ion-note slot="end" style="font-size: x-small">{{ spainInfo?.cases | number }}</ion-note>
-                    <ion-note slot="end" style="font-size: x-small">+{{ spainInfo?.todayCases | number }}</ion-note>
-                    <ion-note slot="end">
-                        <ion-badge style="font-size: xx-small" color="warning">
-                            +{{ spainInfo?.todayCases * 100 / spainInfo?.cases | number : '1.2-2'}}%
-                        </ion-badge>
-                    </ion-note>
-                </ion-item>
-            </ion-list>
-            <ion-list>
-                <ion-item>
-                    <ion-label style="font-size: small">Fallecidos:</ion-label>
-                    <ion-note slot="end" style="font-size: x-small">{{ spainInfo?.deaths | number }}</ion-note>
-                    <ion-note slot="end" style="font-size: x-small">+{{ spainInfo?.todayDeaths | number }}</ion-note>
-                    <ion-note slot="end">
-                        <ion-badge style="font-size: xx-small" color="danger">
-                            +{{ spainInfo?.todayDeaths * 100 / spainInfo?.deaths | number : '1.2-2'}}%
-                        </ion-badge>
-                    </ion-note>
-                </ion-item>
-            </ion-list>
-
-            <ion-list>
-                <ion-item>
-                    <ion-label style="font-size: small">Activos:</ion-label>
-                    <ion-note slot="end" style="font-size: x-small">{{ spainInfo?.active | number }}</ion-note>
-                </ion-item>
-            </ion-list>
-            <ion-list>
-                <ion-item>
-                    <ion-label style="font-size: small">Recuperados:</ion-label>
-                    <ion-note slot="end" style="font-size: x-small">{{ spainInfo?.recovered | number }}</ion-note>
-                </ion-item>
-            </ion-list>
-        </ion-card-content>
-    </ion-card>
+    <app-summary></app-summary>
     <ion-toolbar>
-        <ion-segment value="all">
+        <ion-segment value="all" (click)="onSelectorClicked($event)">
             <ion-segment-button value="all">
-                <ion-label>All</ion-label>
+                <ion-label>Casos acumulados</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="favorites">
-                <ion-label>Favorites</ion-label>
+            <ion-segment-button value="daily">
+                <ion-label>Casos diario</ion-label>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
@@ -96,62 +45,111 @@
     <!--    </tr>-->
     <!--    </tbody>-->
     <!--  </table>-->
-    <div class="chart-wrapper">
-        <canvas baseChart
-                *ngIf="data"
-                [datasets]="lineChartData"
-                [labels]="lineChartLabels"
-                [options]="lineChartOptions"
-                [colors]="lineChartColors"
-                [legend]="lineChartLegend"
-                [chartType]="lineChartType"
-                [plugins]="lineChartPlugins">
-        </canvas>
-    </div>
 
-    <div class="chart-wrapper">
-        <canvas baseChart
-                *ngIf="chartReady"
-                [data]="doughnutChartData"
-                [labels]="doughnutChartLabels"
-                [chartType]="doughnutChartType">
-        </canvas>
-    </div>
 
-    <div class="chart-wrapper">
-        <canvas baseChart
-                *ngIf="chartReady"
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [options]="barChartOptions"
-                [plugins]="barChartPlugins"
-                [legend]="barChartLegend"
-                [chartType]="barChartType">
-        </canvas>
-    </div>
+    <app-historical *ngIf="chartSelected ==='all'"></app-historical>
+    <!--    <ion-card *ngIf="chartSelected ==='all'">-->
+    <!--        <ion-card-header>-->
+    <!--            <ion-card-subtitle>-->
+    <!--                Evolucion de casos-->
+    <!--            </ion-card-subtitle>-->
+    <!--        </ion-card-header>-->
+    <!--        <div class="chart-wrapper">-->
+    <!--            <canvas baseChart-->
+    <!--                    *ngIf="data"-->
+    <!--                    [datasets]="lineChartData"-->
+    <!--                    [labels]="lineChartLabels"-->
+    <!--                    [options]="lineChartOptions"-->
+    <!--                    [colors]="lineChartColors"-->
+    <!--                    [legend]="lineChartLegend"-->
+    <!--                    [chartType]="lineChartType"-->
+    <!--                    [plugins]="lineChartPlugins">-->
+    <!--            </canvas>-->
+    <!--        </div>-->
+    <!--        <ion-card-content>-->
+    <!--        </ion-card-content>-->
+    <!--    </ion-card>-->
 
-    <ion-toolbar>
-        <div>
-            <ngx-datatable
-                    class="material"
-                    [rows]="communities"
-                    [loadingIndicator]="loadingIndicator"
-                    [columns]="columns"
-                    [headerHeight]="50"
-                    [footerHeight]="50"
-                    rowHeight="auto"
-                    [reorderable]="reorderable">
-            </ngx-datatable>
-        </div>
 
-    </ion-toolbar>
+    <!--    <div class="chart-wrapper">-->
+    <!--        <canvas baseChart-->
+    <!--                *ngIf="chartReady"-->
+    <!--                [data]="doughnutChartData"-->
+    <!--                [labels]="doughnutChartLabels"-->
+    <!--                [chartType]="doughnutChartType">-->
+    <!--        </canvas>-->
+    <!--    </div>-->
 
+    <!--    <div class="chart-wrapper">-->
+    <!--        <canvas baseChart-->
+    <!--                *ngIf="chartReady"-->
+    <!--                [datasets]="barChartData"-->
+    <!--                [labels]="barChartLabels"-->
+    <!--                [options]="barChartOptions"-->
+    <!--                [plugins]="barChartPlugins"-->
+    <!--                [legend]="barChartLegend"-->
+    <!--                [chartType]="barChartType">-->
+    <!--        </canvas>-->
+    <!--    </div>-->
+
+    <!--    <ion-toolbar>-->
+    <!--        <div>-->
+    <!--            <ngx-datatable-->
+    <!--                    class="material"-->
+    <!--                    [rows]="communities"-->
+    <!--                    [loadingIndicator]="loadingIndicator"-->
+    <!--                    [columns]="columns"-->
+    <!--                    [headerHeight]="50"-->
+    <!--                    [footerHeight]="50"-->
+    <!--                    rowHeight="auto"-->
+    <!--                    [reorderable]="reorderable">-->
+    <!--            </ngx-datatable>-->
+    <!--        </div>-->
+
+    <!--    </ion-toolbar>-->
+
+
+    <ion-card *ngIf="chartSelected ==='daily'">
+        <ngx-charts-bar-vertical
+                [scheme]="colorScheme"
+                [results]="single"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="true"
+                [xAxisLabel]="">
+        </ngx-charts-bar-vertical>
+        <ion-card-content>
+        </ion-card-content>
+    </ion-card>
+    <app-age-range></app-age-range>
+
+
+    <!--    <ion-card>-->
+    <!--        <ion-card-content>-->
+    <!--        </ion-card-content>-->
+    <!--&lt;!&ndash;        <ngx-charts-bar-horizontal-2d&ndash;&gt;-->
+    <!--&lt;!&ndash;                [view]="[340, 100]"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [scheme]="colorScheme"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [schemeType]="schemeType"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [results]="result"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [xAxis]="showXAxis"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [yAxis]="showYAxis"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [legend]="showLegend"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [showXAxisLabel]="false"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [showYAxisLabel]="true"&ndash;&gt;-->
+    <!--&lt;!&ndash;                [xAxisLabel]="xAxisLabel"&ndash;&gt;-->
+    <!--&lt;!&ndash;        >&ndash;&gt;-->
+    <!--&lt;!&ndash;        </ngx-charts-bar-horizontal-2d>&ndash;&gt;-->
+    <!--        <ion-card-content>-->
+    <!--        </ion-card-content>-->
+    <!--    </ion-card>-->
 
 
     <ion-toolbar>
         <ion-tabs>
-            <ion-tab-bar slot="bottom">
-                <ion-tab-button tab="schedule">
+            <ion-tab-bar slot="communities">
+                <ion-tab-button [routerLink]="['/communities']">
                     <ion-icon name="calendar"></ion-icon>
                     <ion-label>Schedule</ion-label>
                 </ion-tab-button>
