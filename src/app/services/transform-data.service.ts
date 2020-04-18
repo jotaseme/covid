@@ -6,43 +6,40 @@ import {Papa} from 'ngx-papaparse';
 })
 export class TransformDataService {
 
+  public ranges = ["90 y +", "80-89", "70-79", "60-69", "50-59", "40-49", "30-39", "20-29", "10-19", "0-9"];
+
   constructor(private csvParser: Papa) {
   }
 
-  transformDataByCases = (data) => {
+  transformDataByCases = (data, ccaa = 'Total', daily = false) => {
     return new Promise(resolve => {
       this.csvParser.parse(data, {
         header: true,
         complete: results => {
-          let row = results.data.filter((res) => res.cod_ine == '00')[0];
-          const dates = Object.keys(row);
-          const cases = Object.values(row);
-          dates.splice(0, 2);
-          cases.splice(0, 2);
-          const increment = [];
-          cases.forEach((value, index) => {
-            let val = +value - (+cases[index-1]);
-            increment.push(isNaN(val) ? 0 : val );
+          const dataSet = [];
+          const data = results.data.find(res => res.CCAA === ccaa);
+          const dates = Object.keys(data).slice(2, Object.keys(data).length);
+          const values = Object.values(data).slice(2, Object.values(data).length);
+          values.forEach((value, key) => {
+            let val = daily ? +value - (+values[key - 1]) : +values[key];
+            dataSet.push({
+              y: +val,
+              x: new Date(2020, (+dates[key].split("-")[1]-1), +dates[key].split("-")[2]) })
           })
-          let kk = [];
-          dates.forEach((value, index) => {
-            kk.push({name: value, value: increment[index]})
-          })
-          resolve(kk);
+          resolve(dataSet);
         }
       });
     });
   };
 
   transformDataByAge = (data) => {
-    const ranges = ["90 y +", "80-89", "70-79", "60-69", "50-59", "40-49", "30-39", "20-29", "10-19", "0-9"];
     return new Promise(resolve => {
       this.csvParser.parse(data, {
         header: true,
         complete: results => {
           let date = new Date();
           let femaleDataPoints = [];
-          ranges.forEach( range => {
+          this.ranges.forEach( range => {
             let deaths = results.data.filter(res => {
               return res.sexo === 'mujeres'
                 && res.rango_edad === range
@@ -52,7 +49,7 @@ export class TransformDataService {
           });
 
           let maleDataPoints = [];
-          ranges.forEach( range => {
+          this.ranges.forEach( range => {
             let deaths = results.data.filter(res => {
               return res.sexo === 'hombres'
                 && res.rango_edad === range
