@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Estadísticas COVID19</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-toolbar>
+    <ion-segment value="all" (click)="onSelectorClicked($event)">
+      <ion-segment-button value="all">
+        <ion-label>Casos acumulados</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="daily">
+        <ion-label>Casos diario</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <app-historical *ngIf="chartSelected ==='all'"></app-historical>
+
+  <ion-card *ngIf="chartSelected ==='daily'">
+    <ngx-charts-bar-vertical
+            [scheme]="colorScheme"
+            [results]="single"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="true"
+            [xAxisLabel]="">
+    </ngx-charts-bar-vertical>
+    <ion-card-content>
+    </ion-card-content>
+  </ion-card>
+  <app-age-range></app-age-range>
+</ion-content>

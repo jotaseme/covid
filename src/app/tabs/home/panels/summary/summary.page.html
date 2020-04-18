@@ -1,0 +1,36 @@
+<ion-card>
+    <ion-list>
+        <ion-item>
+            <ion-label>Comunidad autónoma</ion-label>
+            <ion-select value="España" (ionChange)="onSelectorChange($event)">
+                <ion-select-option *ngFor="let community of communities" [value]="community"> {{ community }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+    <ion-card-content>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Confirmados:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.Total_Casos_cambio_porciento_24h }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Nuevos casos:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.Total_Nuevos_Casos }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Fallecidos:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.Total_Fallecidos_24h }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Recuperados:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.Total_Recuperados_24h }}</ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-card-content>
+</ion-card>

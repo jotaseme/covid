@@ -1,0 +1,12 @@
+<ion-toolbar>
+    <ion-segment value="all" (click)="onSelectorClicked($event)">
+        <ion-segment-button value="all">
+            <ion-label>Acumulados</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="daily">
+            <ion-label>Diario</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+<app-accumulate [communitySelected$]="communitySelected$"></app-accumulate>
+<app-daily [communitySelected$]="communitySelected$"></app-daily>
