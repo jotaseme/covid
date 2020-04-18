@@ -26,11 +26,20 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'statistics',
+        path: 'world',
         children: [
           {
             path: '',
-            loadChildren: () => import('./statistics/statistics.module').then( m => m.StatisticsPageModule)
+            loadChildren: () => import('./world/world.module').then(m => m.WorldModule)
+          }
+        ]
+      },
+      {
+        path: 'europe',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./europe/europe.module').then( m => m.EuropePageModule)
           }
         ]
       },
@@ -45,7 +54,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/tabs/home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

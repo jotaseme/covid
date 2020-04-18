@@ -8,16 +8,12 @@ import {Papa} from 'ngx-papaparse';
 })
 export class SpainDataService {
 
-  public endpoint = 'https://api.chollx.es/coronavirus/ca';
-  public endpointDeathsCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_fallecidos_long.csv';
-  public endpointAgeCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19_rango_edad.csv';
-  public endpointCasesCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_casos.csv';
+  private endpointDeathsCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_fallecidos.csv';
+  private endpointAgeCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19_rango_edad.csv';
+  private endpointCasesCSV = 'https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_casos.csv';
+  private endpointSpainCasesByCommunities = 'https://covid19-server.chrismichael.now.sh/api/v1/SpainCasesByCommunities';
 
   constructor(private httpClient: HttpClient, private csvParser: Papa) { }
-
-  getAll$ = (): Observable <any> => {
-    return this.httpClient.get(this.endpoint, {});
-  }
 
   getCsvData$ = (endpoint: string): Observable<any> => {
     let url = '';
@@ -36,6 +32,6 @@ export class SpainDataService {
   }
 
   getSpainCasesByCommunities$ =() => {
-    return this.httpClient.get('https://covid19-server.chrismichael.now.sh/api/v1/SpainCasesByCommunities');
+    return this.httpClient.get(this.endpointSpainCasesByCommunities);
   }
 }

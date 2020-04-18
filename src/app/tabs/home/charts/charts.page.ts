@@ -14,8 +14,4 @@ export class ChartsPage implements OnInit {
 
   ngOnInit() {
   }
-
-  onSelectorClicked($event: MouseEvent) {
-    
-  }
 }

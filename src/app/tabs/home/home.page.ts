@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import { SpainDataService } from '../../services/spain-data.service';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -13,13 +12,10 @@ export class HomePage implements OnInit {
     public communities;
     public communitySelected = new BehaviorSubject<string>('Total');
 
-    constructor(private spainDataService: SpainDataService) {
+    constructor() {
     }
 
     ngOnInit(): void {
-        this.spainDataService.getAll$().subscribe(res => {
-            this.communities = res;
-        });
     }
 
     onCommunitySelected(event: string) {

@@ -38,7 +38,11 @@ export class AgeRangePage implements OnInit {
       },
       legend: {
         cursor: 'pointer',
-
+        fontSize: 10,
+        itemclick: function(e) {
+          e.dataSeries.visible = !(typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible);
+          e.chart.render();
+        }
       },
       toolTip: {
         shared: true,

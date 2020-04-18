@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {SpainDataService} from '../../../../services/spain-data.service';
-import {TransformDataService} from '../../../../services/transform-data.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { SpainDataService } from '../../../../services/spain-data.service';
+import { TransformDataService } from '../../../../services/transform-data.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min';
-import {Observable, of} from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-daily',
@@ -12,7 +12,10 @@ import {Observable, of} from 'rxjs';
 export class DailyPage implements OnInit {
 
   @Input() communitySelected$: Observable<string>;
-  public data = [];
+  public chart;
+
+  public dataCases = [];
+  public dataDeaths = [];
 
   constructor(private spainDataService: SpainDataService, private transformDataService: TransformDataService) {
   }
@@ -22,42 +25,78 @@ export class DailyPage implements OnInit {
       this.spainDataService.getCsvData$('CASES').subscribe(res => {
         this.transformDataService.transformDataByCases(res, community, true).then(
           (collection) => {
-            this.data = collection as [];
+            this.dataCases = collection as [];
+          });
+      });
+
+      this.spainDataService.getCsvData$('DEATHS').subscribe(res => {
+        this.transformDataService.transformDataByCases(res, community, true).then(
+          (collection) => {
+            this.dataDeaths = collection as [];
             this.renderChart();
           });
-      })
-    });
+      });
 
+    });
   }
 
   renderChart = () => {
-    let chart = new CanvasJS.Chart("dailyChartContainer", {
+    this.chart = new CanvasJS.Chart('dailyChartContainer', {
       animationEnabled: true,
-      title:{
-        text: " "
+      title: {
+        text: ' '
       },
       axisX: {
-        valueFormatString: "DD MMM"
+        valueFormatString: 'DD MMM',
+        stripLines: [
+          {
+            value: new Date(2020, 2, 14),
+            label: 'Estado alarma',
+            labelFontColor: '#808080',
+            opacity: '.3',
+            labelAlign: 'far'
+          },
+          {
+            value: new Date(2020, 2, 30),
+            label: 'Estado alarma',
+            labelFontColor: '#808080',
+            opacity: '.3',
+            labelAlign: 'center'
+          }
+        ]
       },
       axisY: {
-        title: "",
+        title: '',
         includeZero: false,
-        suffix: ""
+        suffix: ''
       },
-      legend:{
-        cursor: "pointer",
+      legend: {
+        cursor: 'pointer',
         fontSize: 10,
+        itemclick: function(e) {
+          e.dataSeries.visible = !(typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible);
+          e.chart.render();
+        }
       },
-      toolTip:{
+      toolTip: {
         shared: true
       },
-      data: [{
-        name: "Casos",
-        type: "spline",
-        showInLegend: true,
-        dataPoints: this.data
-      }]
+      data: [
+        {
+          name: 'Casos',
+          type: 'spline',
+          showInLegend: true,
+          dataPoints: this.dataCases
+        },
+        {
+          name: 'Fallecidos',
+          type: 'spline',
+          showInLegend: true,
+          dataPoints: this.dataDeaths
+        },
+
+      ]
     });
-    chart.render();
-  }
+    this.chart.render();
+  };
 }

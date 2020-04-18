@@ -21,7 +21,7 @@ export class TransformDataService {
           const dates = Object.keys(data).slice(2, Object.keys(data).length);
           const values = Object.values(data).slice(2, Object.values(data).length);
           values.forEach((value, key) => {
-            let val = daily ? +value - (+values[key - 1]) : +values[key];
+            let val = daily && value !== '0' ? +value - (+values[key - 1]) : +values[key];
             dataSet.push({
               y: +val,
               x: new Date(2020, (+dates[key].split("-")[1]-1), +dates[key].split("-")[2]) })
