@@ -1,9 +1,9 @@
 /* tslint:disable:no-string-literal */
 import {Component, OnInit} from '@angular/core';
-import {SpainDataService} from '../services/spain-data.service';
+import {SpainDataService} from '../../services/spain-data.service';
 import {Label, MultiDataSet} from 'ng2-charts/lib/base-chart.directive';
 import {Color} from 'ng2-charts/lib/color';
-import {TransformDataService} from '../services/transform-data.service';
+import {TransformDataService} from '../../services/transform-data.service';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 
 
@@ -88,6 +88,7 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log('hola')
         this.spainDataService.getCsvData$('CASES').subscribe(res => {
             this.transformDataService.transformDataByCases(res).then(
                 (collection) => {
