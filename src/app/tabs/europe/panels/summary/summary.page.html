@@ -1,0 +1,36 @@
+<ion-card>
+    <ion-list>
+        <ion-item>
+            <ion-label>País</ion-label>
+            <ion-select value="Spain" (ionChange)="onSelectorChange($event)">
+                <ion-select-option *ngFor="let country of countries" [value]="country"> {{ country }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+    <ion-card-content>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Confirmados:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.cases | number }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Nuevos casos:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.todayCases | number }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Fallecidos:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.deaths | number }}</ion-note>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label style="font-size: small">Recuperados:</ion-label>
+                <ion-note slot="end" style="font-size: small">{{ summary?.recovered | number }}</ion-note>
+            </ion-item>
+        </ion-list>
+    </ion-card-content>
+</ion-card>

@@ -7,5 +7,7 @@
       <ion-title>Europa #COVID19</ion-title>
     </ion-toolbar>
   </ion-header>
+  <app-summary (countrySelected)="onCountrySelected($event)"></app-summary>
+  <app-daily [countrySelected$]="countrySelected$"></app-daily>
   <app-cases-per-hundred></app-cases-per-hundred>
 </ion-content>
