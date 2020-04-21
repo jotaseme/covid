@@ -10,6 +10,5 @@ export class WorldPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('hello world')
   }
 }

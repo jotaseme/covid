@@ -16,6 +16,7 @@ export class SummaryPage implements OnInit {
   public novelCovid;
 
   public countries = EU_COUNTRIES;
+  date = new Date();
 
   constructor() {
     this.novelCovid = new NovelCovid();

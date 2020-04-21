@@ -97,4 +97,9 @@ export class AccumulatePage implements OnInit {
     });
     chart.render();
   };
+  seg_id: number;
+
+  goToDetail(seg_id: any) {
+    
+  }
 }

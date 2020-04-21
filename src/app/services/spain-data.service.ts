@@ -34,4 +34,8 @@ export class SpainDataService {
   getSpainCasesByCommunities$ =() => {
     return this.httpClient.get(this.endpointSpainCasesByCommunities);
   }
+
+  getBannerImage$ = () => {
+    this.httpClient.get('https://covid19tracking.narrativa.com/feed.json').subscribe(res => console.log(res))
+  }
 }
