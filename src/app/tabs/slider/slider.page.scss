@@ -1,0 +1,46 @@
+.main_content_div{
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    background: white;
+
+    ion-slides{
+        --bullet-background : #E0E0E0;
+        --bullet-background-active : var(--ion-color-main);
+    }
+    .slide_div{
+       width: 100%;
+       height: 95vh;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+
+       .slide_img{
+            width: 200px;
+            height: 200px;
+        }
+        .head_lbl{
+            font-size: 26px;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        .small_lbl{
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .start_btn{
+            margin-top: 30px;
+            // --background : linear-gradient(to right, var(--ion-color-main), var(--ion-color-main2));
+            --background: var(--ion-color-main);;
+            width: 180px;
+            --border-radius: 5px;
+            font-family: 'semi-bold';
+            // color: black;
+        }
+    }
+}
+    

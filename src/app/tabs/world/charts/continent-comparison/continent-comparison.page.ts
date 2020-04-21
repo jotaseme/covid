@@ -8,7 +8,7 @@ import * as CanvasJS from '../../../../../assets/canvasjs.min';
   styleUrls: ['./continent-comparison.page.scss'],
 })
 export class ContinentComparisonPage implements OnInit {
-
+  public date = new Date();
   public europe;
   public northAmerica ;
   public southAmerica;

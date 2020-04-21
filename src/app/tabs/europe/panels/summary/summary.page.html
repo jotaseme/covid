@@ -1,36 +1,49 @@
-<ion-card>
-    <ion-list>
-        <ion-item>
-            <ion-label>País</ion-label>
-            <ion-select value="Spain" (ionChange)="onSelectorChange($event)">
-                <ion-select-option *ngFor="let country of countries" [value]="country"> {{ country }}</ion-select-option>
-            </ion-select>
-        </ion-item>
-    </ion-list>
-    <ion-card-content>
-        <ion-list>
-            <ion-item>
-                <ion-label style="font-size: small">Confirmados:</ion-label>
-                <ion-note slot="end" style="font-size: small">{{ summary?.cases | number }}</ion-note>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label style="font-size: small">Nuevos casos:</ion-label>
-                <ion-note slot="end" style="font-size: small">{{ summary?.todayCases | number }}</ion-note>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label style="font-size: small">Fallecidos:</ion-label>
-                <ion-note slot="end" style="font-size: small">{{ summary?.deaths | number }}</ion-note>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label style="font-size: small">Recuperados:</ion-label>
-                <ion-note slot="end" style="font-size: small">{{ summary?.recovered | number }}</ion-note>
-            </ion-item>
-        </ion-list>
-    </ion-card-content>
-</ion-card>
+<div class="main_content_div">
+    <div class="card_div">
+        <div class="upper_div">
+            <div style="width: 50%;">
+                <ion-label class="small">
+                    País
+                </ion-label>
+                <ion-label class="bold_lbl">
+                    {{ date | date: 'd/MM/yy'}}
+                </ion-label>
+            </div>
+            <div style="width: 50%;">
+                <ion-label class="bold_lbl">
+                    <ion-select value="Spain" (ionChange)="onSelectorChange($event)">
+                        <ion-select-option *ngFor="let country of countries" [value]="country"> {{ country }}</ion-select-option>
+                    </ion-select>
+                </ion-label>
+            </div>
+        </div>
+        <div class="lower_div">
+            <div class="up_div">
+                <ion-list>
+                    <ion-item>
+                        <ion-label style="font-size: small">Confirmados:</ion-label>
+                        <ion-note slot="end" style="font-size: small">{{ summary?.cases | number }}</ion-note>
+                    </ion-item>
+                </ion-list>
+                <ion-list>
+                    <ion-item>
+                        <ion-label style="font-size: small">Nuevos casos:</ion-label>
+                        <ion-note slot="end" style="font-size: small">{{ summary?.todayCases | number }}</ion-note>
+                    </ion-item>
+                </ion-list>
+                <ion-list>
+                    <ion-item>
+                        <ion-label style="font-size: small">Fallecidos:</ion-label>
+                        <ion-note slot="end" style="font-size: small">{{ summary?.deaths | number }}</ion-note>
+                    </ion-item>
+                </ion-list>
+                <ion-list>
+                    <ion-item>
+                        <ion-label style="font-size: small">Recuperados:</ion-label>
+                        <ion-note slot="end" style="font-size: small">{{ summary?.recovered | number }}</ion-note>
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+    </div>
+</div>

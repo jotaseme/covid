@@ -11,7 +11,7 @@ export class SummaryPage implements OnInit {
   @Output() communitySelected = new EventEmitter<string>();
 
   public summary;
-
+  public date = new Date();
   public spainData;
 
   public communities = [

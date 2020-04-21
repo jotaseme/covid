@@ -34,4 +34,8 @@ export class SpainDataService {
   getSpainCasesByCommunities$ =() => {
     return this.httpClient.get(this.endpointSpainCasesByCommunities);
   }
+
+  getBannerImage$ = () => {
+    this.httpClient.get('https://www.mscbs.gob.es/diseno/img/CORONAVIRUS-CIAN.jpg').subscribe(res => console.log(res))
+  }
 }

@@ -1,44 +1,65 @@
-<ion-card>
-  <ion-list>
-    <ion-item>
-      <ion-label>Continente</ion-label>
-      <ion-select value="Europa" (ionChange)="onSelectorChange($event)">
-        <ion-select-option *ngFor="let continent of continents" [value]="continent"> {{ continent }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-  <ion-card-content>
-    <ion-list>
-      <ion-item>
-        <ion-label style="font-size: small">Confirmados:</ion-label>
-        <ion-note slot="end" style="font-size: small">{{ summary?.cases | number }}</ion-note>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ion-item>
-        <ion-label style="font-size: small">Nuevos casos:</ion-label>
-        <ion-note slot="end" style="font-size: small">{{ summary?.todayCases | number }}</ion-note>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ion-item>
-        <ion-label style="font-size: small">Fallecidos:</ion-label>
-        <ion-note slot="end" style="font-size: small">{{ summary?.deaths | number }}</ion-note>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ion-item>
-        <ion-label style="font-size: small">Recuperados:</ion-label>
-        <ion-note slot="end" style="font-size: small">{{ summary?.recovered | number }}</ion-note>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Desarrollo</ion-card-title>
-    <ion-card-subtitle>Del virus a nivel mundial</ion-card-subtitle>
-  </ion-card-header>
-  <div id="europeComparisonChartContainer" style="height: 370px; width: 100%;"></div>
-  <ion-card-content></ion-card-content>
-</ion-card>
+<div class="main_content_div">
+  <div class="card_div">
+    <div class="upper_div">
+      <div style="width: 50%;">
+        <ion-label class="small">
+          Continente
+        </ion-label>
+        <ion-label class="bold_lbl">
+          {{ date | date: 'd/MM/yy'}}
+        </ion-label>
+      </div>
+      <div style="width: 50%;">
+        <ion-label class="bold_lbl">
+          <ion-select value="Spain" (ionChange)="onSelectorChange($event)">
+            <ion-select-option *ngFor="let continent of continents" [value]="continent"> {{ continent }}</ion-select-option>
+          </ion-select>
+        </ion-label>
+      </div>
+    </div>
+    <div class="lower_div">
+      <div class="up_div">
+        <ion-list>
+          <ion-item>
+            <ion-label style="font-size: small">Confirmados:</ion-label>
+            <ion-note slot="end" style="font-size: small">{{ summary?.cases | number }}</ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-item>
+            <ion-label style="font-size: small">Nuevos casos:</ion-label>
+            <ion-note slot="end" style="font-size: small">{{ summary?.todayCases | number }}</ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-item>
+            <ion-label style="font-size: small">Fallecidos:</ion-label>
+            <ion-note slot="end" style="font-size: small">{{ summary?.deaths | number }}</ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-item>
+            <ion-label style="font-size: small">Recuperados:</ion-label>
+            <ion-note slot="end" style="font-size: small">{{ summary?.recovered | number }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main_content_div">
+  <div class="card_div">
+    <div class="upper_div">
+      <div style="width: 50%;">
+        <ion-label class="small">Distribución mundial</ion-label>
+        <ion-label class="bold_lbl">COVID19</ion-label>
+      </div>
+    </div>
+    <div class="lower_div">
+      <div class="up_div">
+        <div id="europeComparisonChartContainer" style="height: 370px; width: 100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
